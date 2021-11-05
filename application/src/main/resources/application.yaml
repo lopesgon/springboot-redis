@@ -1,0 +1,18 @@
+server:
+    port: 8088
+
+spring:
+    redis:
+        host: localhost
+        port: 6379
+        database: 0
+        username: 
+        password: secure-password
+        timeout: 60000
+        sentinel:
+            master: mymaster
+            nodes: localhost:26380,localhost:26381,localhost:26382
+
+logging:
+    level:
+        com.lopesgon.redispoc: trace

@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  nginx:
+    container_name: redis-reverse-proxy
+    image: nginx:1.21.3
+    entrypoint: ["echo", "Nginx is deactivated..."]
+    environment:
+      - NGINX_PORT=80
+    expose:
+      - 80
+    #ports:
+    #  - 6379:80
+    #  - 26379:80
+    links:
+      - redis-master
+      - redis-slave
+      - redis-slave2
+      - redis-slave3
+    volumes: 
+      - ./nginx.conf:/etc/nginx/nginx.conf
+  
+  redis-master:
+    container_name: redis-master
+    image: redis:6.2.5
+    expose: 
+      - 6379
+    ports:
+      - 6379:6379
+    command: redis-server /redis/redis.conf --requirepass secure-password
+    volumes:
+      - ./:/redis
+      - ./data:/redis/data
+
+  redis-slave:
+    ports:
+      - 6380:6379
+      - 26380:26379
+    extends: 
+      file: slave-template.yml
+      service: redis-slave
+    links: 
+      - redis-master
+      - redis-slave2
+      - redis-slave3
+  redis-slave2:
+    ports:
+      - 6381:6379
+      - 26381:26379
+    extends: 
+      file: slave-template.yml
+      service: redis-slave
+    links: 
+      - redis-master
+  redis-slave3:
+    ports:
+      - 6382:6379
+      - 26382:26379
+    extends: 
+      file: slave-template.yml
+      service: redis-slave
+    links: 
+      - redis-master
+  
+

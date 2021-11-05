@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  redis-slave:
+    expose: 
+      - 6379
+      - 26379
+    build:
+      context: ./slave-image
+    environment:
+      - IP_MASTER=redis-master
+      - RESOLVE_HOSTNAMES=yes
+      - DEFAULT_PASSWORD=secure-password
+      - SLAVE_LOG_FILE=""
+      - SENTINEL_LOG_FILE=""
+    volumes:
+      - ./data:/redis/data

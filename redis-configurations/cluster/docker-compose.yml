@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  redis:
+    # container_name: redis-cluster
+    image: redis:6.2.5
+    expose:
+      - 6379
+    #ports:
+    #  - 6379:6379
+    command: redis-server /redis/redis.conf --requirepass secure-password
+    volumes:
+      - ./redis.conf:/redis
+      - ./data:/redis/data

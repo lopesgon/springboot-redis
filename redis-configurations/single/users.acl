@@ -1,0 +1,5 @@
+user default off
+
+user alice on +@all -DEBUG ~* >alicepassword
+user maurice on allcommands >mauricepassword
+user limitedpubsub on +@all >limitedpassword
